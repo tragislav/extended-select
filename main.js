@@ -24,6 +24,4 @@ class ExtendedSelect {
     }
 }
 
-console.log(select);
-
 const aaa = new ExtendedSelect(select);
