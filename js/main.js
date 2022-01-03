@@ -8,31 +8,52 @@ class ExtendedSelect {
         this.select = document.querySelector(element);
         this.labelText = labelText;
 
-        this.buttonText = `Посмотреть выбранное (${this.select.length})`;
+        this.buttonText = `Показать выбранное (${this.select.length}) / позже будет правильное значение`;
         this.select.setAttribute('size', 1);
 
         this.mainDiv = document.createElement('div');
-        this.titleDiv = document.createElement('div');
-        this.label = document.createElement('h3');
-        this.btn = document.createElement('button');
+        this.mainDiv.classList.add('select');
 
+        this.titleDiv = document.createElement('div');
+        this.titleDiv.classList.add('select-header');
+
+        this.label = document.createElement('h3');
+        this.label.classList.add('select-header__title');
+
+        this.infoBtn = document.createElement('button');
+        this.infoBtn.classList.add('select-header__button');
+
+        // MODAL
         this.modal = document.createElement('div');
-        this.modal.style.width = '100%';
-        this.modal.style.height = '100vh';
-        this.modal.style.display = 'none';
+        this.modal.classList.add('modal');
+
+        this.modalContent = document.createElement('div');
+        this.modalContent.classList.add('modal-content');
+        this.modalContent.innerHTML = 'Какой-то контент';
+
+        this.closeBtn = document.createElement('span');
+        this.closeBtn.innerHTML = '&times;';
+        this.closeBtn.classList.add('close');
 
         this.label.innerHTML = this.labelText;
-        this.btn.innerHTML = this.buttonText;
-        this.modal.innerHTML = 'arr';
+        this.infoBtn.innerHTML = this.buttonText;
 
         this.mainDiv.appendChild(this.titleDiv);
         this.titleDiv.appendChild(this.label);
-        this.titleDiv.appendChild(this.btn);
+        this.titleDiv.appendChild(this.infoBtn);
         this.mainDiv.appendChild(this.select);
         container.appendChild(this.mainDiv);
         container.appendChild(this.modal);
+        this.modal.appendChild(this.modalContent);
+        this.modalContent.appendChild(this.closeBtn);
 
-        this.btn.addEventListener('click', () => {
+        this.infoBtn.addEventListener('click', () => {
+            this.openModal();
+        });
+        this.closeBtn.addEventListener('click', () => {
+            this.closeModal();
+        });
+        this.select.addEventListener('click', () => {
             this.openModal();
         });
     }
@@ -50,12 +71,16 @@ class ExtendedSelect {
         newOption.value = this.select.children.length;
         newOption.innerHTML = content;
         this.select.appendChild(newOption);
-        // this.buttonText = `Посмотреть выбранное (${this.select.length})`;
     }
 
     openModal() {
-        alert('Hello World!');
-        this.modal.style.display = 'inline';
+        console.log('Opening modal...');
+        this.modal.style.display = 'block';
+    }
+
+    closeModal() {
+        console.log('Closing modal...');
+        this.modal.style.display = 'none';
     }
 
     isSelected(value) {
