@@ -35,6 +35,8 @@ class ExtendedSelect {
         this.closeBtn.innerHTML = '&times;';
         this.closeBtn.classList.add('close');
 
+        this.modalItemsListContent = document.createElement('div');
+
         this.label.innerHTML = this.labelText;
         this.infoBtn.innerHTML = this.buttonText;
 
@@ -56,6 +58,8 @@ class ExtendedSelect {
         this.select.addEventListener('click', () => {
             this.openModal();
         });
+
+        this.modalItemsList(this.select);
     }
 
     watch() {
@@ -83,8 +87,49 @@ class ExtendedSelect {
         this.modal.style.display = 'none';
     }
 
-    isSelected(value) {
-        console.log(this.select.children[value].defaultSelected);
+    modalItemsList(select) {
+        this.modalItemsListContent.classList.add('modal-list');
+
+        this.modalContent.appendChild(this.modalItemsListContent);
+
+        for (let key of select) {
+            const item = document.createElement('div');
+
+            item.classList.add('modal-list__item');
+
+            const checkBox = document.createElement('input');
+            checkBox.type = 'checkbox';
+            checkBox.id = key.value;
+
+            this.isSelected(key.value, checkBox);
+
+            const itemLabel = document.createElement('p');
+            itemLabel.innerHTML = key.label;
+
+            item.append(checkBox, itemLabel);
+            this.modalItemsListContent.appendChild(item);
+
+            checkBox.addEventListener('change', (e) => {
+                console.log(e.target.id);
+                e.target.checked
+                    ? this.toSelected(e.target.id)
+                    : this.toDiselected(e.target.id);
+            });
+        }
+    }
+
+    isSelected(value, checkBox) {
+        if (this.select.children[value].defaultSelected) {
+            return (checkBox.checked = true);
+        }
+    }
+
+    toSelected(value) {
+        return this.select.children[value].setAttribute('selected', true);
+    }
+
+    toDiselected(value) {
+        return this.select.children[value].removeAttribute('selected');
     }
 }
 

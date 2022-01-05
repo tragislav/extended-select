@@ -80,6 +80,15 @@ html {
     width: 600px;
 }
 
+.modal-list {
+}
+
+.modal-list__item {
+    margin: 10px 0;
+    display: flex;
+    justify-content: flex-start;
+}
+
 .close {
     color: #aaa;
     float: right;
