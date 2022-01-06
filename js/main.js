@@ -8,11 +8,9 @@ class ExtendedSelect {
         this.select = document.querySelector(element);
         this.labelText = labelText;
 
-        this.buttonText = `Показать выбранное (${this.selectedValue(
-            this.select
-        )}) / позже будет правильное значение`;
         this.select.setAttribute('size', 1);
 
+        // PAGE
         this.mainDiv = document.createElement('div');
         this.mainDiv.classList.add('select');
 
@@ -40,11 +38,17 @@ class ExtendedSelect {
         this.clearBtn = document.createElement('button');
         this.clearBtn.innerHTML = 'Очистить';
 
+        this.acceptBtn = document.createElement('button');
+        this.acceptBtn.innerHTML = 'Применить';
+
         this.modalItemsListContent = document.createElement('div');
 
         this.label.innerHTML = this.labelText;
-        this.infoBtn.innerHTML = this.buttonText;
+        this.infoBtn.innerHTML = `Показать выбранное (${this.selectedValue(
+            this.select
+        )})`;
 
+        // APPENDS
         this.mainDiv.appendChild(this.titleDiv);
         this.titleDiv.appendChild(this.label);
         this.titleDiv.appendChild(this.infoBtn);
@@ -54,9 +58,14 @@ class ExtendedSelect {
         this.modal.appendChild(this.modalContent);
         this.modalContent.appendChild(this.closeBtn);
         this.modalContent.appendChild(this.clearBtn);
+        this.modalContent.appendChild(this.acceptBtn);
 
         this.infoBtn.addEventListener('click', () => {
             this.openModal();
+        });
+        this.acceptBtn.addEventListener('click', () => {
+            console.log('Данные успешно изменены...');
+            this.closeModal();
         });
         this.closeBtn.addEventListener('click', () => {
             this.closeModal();
@@ -102,7 +111,9 @@ class ExtendedSelect {
     closeModal() {
         console.log('Closing modal...');
         this.modal.style.display = 'none';
-        this.reRender(this.infoBtn, this.titleDiv);
+        this.infoBtn.innerHTML = `Показать выбранное (${this.selectedValue(
+            this.select
+        )})`;
     }
 
     modalItemsList(select) {
