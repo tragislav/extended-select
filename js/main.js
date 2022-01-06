@@ -5,7 +5,7 @@ const container = document.querySelector('.container');
 // Extended Select
 class ExtendedSelect {
     constructor(element, labelText) {
-        this.select = document.querySelector(element);
+        this.select = document.querySelector(`select[name=${element}]`);
         this.labelText = labelText;
 
         this.select.setAttribute('size', 1);
@@ -175,4 +175,5 @@ class ExtendedSelect {
     }
 }
 
-const aaa = new ExtendedSelect('.visually-hidden', 'Реализуемые товары');
+const aaa = new ExtendedSelect('region', 'Реализуемые товары');
+const bbb = new ExtendedSelect('items', 'Реализуемые позиции');
