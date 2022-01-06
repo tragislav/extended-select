@@ -29,7 +29,15 @@ class ExtendedSelect {
 
         this.modalContent = document.createElement('div');
         this.modalContent.classList.add('modal-content');
-        this.modalContent.innerHTML = 'Какой-то контент';
+
+        this.modalHeader = document.createElement('div');
+        this.modalHeader.classList.add('modal-header');
+        this.modalHeader.innerHTML = 'Какой-то контент';
+
+        this.modalBody = document.createElement('div');
+
+        this.modalFooter = document.createElement('div');
+        this.modalFooter.classList.add('modal-footer');
 
         this.closeBtn = document.createElement('span');
         this.closeBtn.innerHTML = '&times;';
@@ -37,11 +45,14 @@ class ExtendedSelect {
 
         this.clearBtn = document.createElement('button');
         this.clearBtn.innerHTML = 'Очистить';
+        this.clearBtn.classList.add('clearBtn');
 
         this.acceptBtn = document.createElement('button');
         this.acceptBtn.innerHTML = 'Применить';
+        this.acceptBtn.classList.add('acceptBtn');
 
         this.modalItemsListContent = document.createElement('div');
+        this.modalItemsListContent.classList.add('modal-list');
 
         this.label.innerHTML = this.labelText;
         this.infoBtn.innerHTML = `Показать выбранное (${this.selectedValue(
@@ -54,11 +65,16 @@ class ExtendedSelect {
         this.titleDiv.appendChild(this.infoBtn);
         this.mainDiv.appendChild(this.select);
         container.appendChild(this.mainDiv);
+        // Modal appends
         container.appendChild(this.modal);
         this.modal.appendChild(this.modalContent);
-        this.modalContent.appendChild(this.closeBtn);
-        this.modalContent.appendChild(this.clearBtn);
-        this.modalContent.appendChild(this.acceptBtn);
+        this.modalContent.appendChild(this.modalHeader);
+        this.modalContent.appendChild(this.modalBody);
+        this.modalContent.appendChild(this.modalFooter);
+        this.modalHeader.appendChild(this.closeBtn);
+        this.modalBody.appendChild(this.modalItemsListContent);
+        this.modalFooter.appendChild(this.acceptBtn);
+        this.modalFooter.appendChild(this.clearBtn);
 
         this.infoBtn.addEventListener('click', () => {
             this.openModal();
@@ -74,14 +90,14 @@ class ExtendedSelect {
             this.openModal();
         });
         this.clearBtn.addEventListener('click', () => {
-            for (let key of this.select) {
-                this.toDiselected(key.value);
-            }
+            this.toDiselectedAll(this.select);
+
             while (this.modalItemsListContent.firstChild) {
                 this.modalItemsListContent.removeChild(
                     this.modalItemsListContent.lastChild
                 );
             }
+
             this.modalItemsList(this.select);
         });
 
@@ -117,10 +133,6 @@ class ExtendedSelect {
     }
 
     modalItemsList(select) {
-        this.modalItemsListContent.classList.add('modal-list');
-
-        this.modalContent.appendChild(this.modalItemsListContent);
-
         for (let key of select) {
             const item = document.createElement('div');
 
@@ -129,39 +141,45 @@ class ExtendedSelect {
             const checkBox = document.createElement('input');
             checkBox.type = 'checkbox';
             checkBox.id = key.value;
+            checkBox.classList.add('modal-list__item-checkbox');
 
-            this.isSelected(key.value, checkBox);
+            this.isSelected(key.value, checkBox, item);
 
             const itemLabel = document.createElement('p');
             itemLabel.innerHTML = key.label;
+            itemLabel.classList.add('modal-list__item-text');
 
             item.append(checkBox, itemLabel);
             this.modalItemsListContent.appendChild(item);
 
             checkBox.addEventListener('change', (e) => {
                 e.target.checked
-                    ? this.toSelected(e.target.id)
-                    : this.toDiselected(e.target.id);
+                    ? this.toSelected(e.target.id, item)
+                    : this.toDiselected(e.target.id, item);
             });
         }
     }
 
-    reRender(element, parent) {
-        parent.removeChild(element);
-        return parent.appendChild(element);
-    }
-
-    isSelected(value, checkBox) {
+    isSelected(value, checkBox, parent) {
         if (this.select.children[value].defaultSelected) {
+            parent.classList.add('selected');
             return (checkBox.checked = true);
         }
     }
 
-    toSelected(value) {
+    toSelected(value, parent) {
+        parent.classList.add('selected');
         return this.select.children[value].setAttribute('selected', true);
     }
 
-    toDiselected(value) {
+    toDiselectedAll(select) {
+        for (let key of select) {
+            this.select.children[key.value].removeAttribute('selected');
+        }
+    }
+
+    toDiselected(value, parent) {
+        parent.classList.remove('selected');
         return this.select.children[value].removeAttribute('selected');
     }
 

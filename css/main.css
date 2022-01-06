@@ -75,18 +75,12 @@ html {
 .modal-content {
     background-color: #fefefe;
     margin: 15% auto;
-    padding: 20px;
     border: 1px solid #888;
     width: 600px;
 }
 
-.modal-list {
-}
-
-.modal-list__item {
-    margin: 10px 0;
-    display: flex;
-    justify-content: flex-start;
+.modal-header {
+    padding: 20px;
 }
 
 .close {
@@ -101,4 +95,82 @@ html {
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+
+.modal-list {
+    padding: 0 20px;
+}
+
+.modal-list__item {
+    display: flex;
+    justify-content: flex-start;
+
+    padding: 5px 0;
+}
+
+.selected {
+    background: linear-gradient(
+            0deg,
+            rgba(3, 91, 119, 0.05),
+            rgba(3, 91, 119, 0.05)
+        ),
+        #ffffff;
+}
+
+.modal-list__item-checkbox {
+    width: 20px;
+    height: 20px;
+    background: #035b77;
+    border-radius: 4px;
+}
+
+.modal-list__item-text {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+
+    color: #272526;
+
+    padding-top: 3px;
+    padding-left: 10px;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 200px;
+    padding: 20px;
+    background: #fafafa;
+    box-shadow: 0px -1px 0px #d9d9d9;
+}
+
+.acceptBtn {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 18px;
+
+    width: 120px;
+    height: 45px;
+    color: #ffffff;
+    background: #035b77;
+    border: inherit;
+    border-radius: 4px;
+}
+
+.clearBtn {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+    text-align: right;
+    color: #000000;
+    opacity: 0.6;
+
+    border: none;
+    background: inherit;
 }
