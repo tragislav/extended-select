@@ -8,7 +8,9 @@ class ExtendedSelect {
         this.select = document.querySelector(element);
         this.labelText = labelText;
 
-        this.buttonText = `Показать выбранное (${this.select.length}) / позже будет правильное значение`;
+        this.buttonText = `Показать выбранное (${this.selectedValue(
+            this.select
+        )}) / позже будет правильное значение`;
         this.select.setAttribute('size', 1);
 
         this.mainDiv = document.createElement('div');
@@ -35,6 +37,9 @@ class ExtendedSelect {
         this.closeBtn.innerHTML = '&times;';
         this.closeBtn.classList.add('close');
 
+        this.clearBtn = document.createElement('button');
+        this.clearBtn.innerHTML = 'Очистить';
+
         this.modalItemsListContent = document.createElement('div');
 
         this.label.innerHTML = this.labelText;
@@ -48,6 +53,7 @@ class ExtendedSelect {
         container.appendChild(this.modal);
         this.modal.appendChild(this.modalContent);
         this.modalContent.appendChild(this.closeBtn);
+        this.modalContent.appendChild(this.clearBtn);
 
         this.infoBtn.addEventListener('click', () => {
             this.openModal();
@@ -57,6 +63,17 @@ class ExtendedSelect {
         });
         this.select.addEventListener('click', () => {
             this.openModal();
+        });
+        this.clearBtn.addEventListener('click', () => {
+            for (let key of this.select) {
+                this.toDiselected(key.value);
+            }
+            while (this.modalItemsListContent.firstChild) {
+                this.modalItemsListContent.removeChild(
+                    this.modalItemsListContent.lastChild
+                );
+            }
+            this.modalItemsList(this.select);
         });
 
         this.modalItemsList(this.select);
@@ -85,6 +102,7 @@ class ExtendedSelect {
     closeModal() {
         console.log('Closing modal...');
         this.modal.style.display = 'none';
+        this.reRender(this.infoBtn, this.titleDiv);
     }
 
     modalItemsList(select) {
@@ -110,12 +128,16 @@ class ExtendedSelect {
             this.modalItemsListContent.appendChild(item);
 
             checkBox.addEventListener('change', (e) => {
-                console.log(e.target.id);
                 e.target.checked
                     ? this.toSelected(e.target.id)
                     : this.toDiselected(e.target.id);
             });
         }
+    }
+
+    reRender(element, parent) {
+        parent.removeChild(element);
+        return parent.appendChild(element);
     }
 
     isSelected(value, checkBox) {
@@ -130,6 +152,15 @@ class ExtendedSelect {
 
     toDiselected(value) {
         return this.select.children[value].removeAttribute('selected');
+    }
+
+    selectedValue(select) {
+        let counter = 0;
+        for (let children of select) {
+            children.selected ? counter++ : null;
+        }
+
+        return counter;
     }
 }
 
