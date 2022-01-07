@@ -32,7 +32,15 @@ class ExtendedSelect {
 
         this.modalHeader = document.createElement('div');
         this.modalHeader.classList.add('modal-header');
-        this.modalHeader.innerHTML = 'Какой-то контент';
+
+        this.modalHeaderTitle = document.createElement('div');
+        this.modalHeaderTitle.classList.add('modal-header__title');
+
+        this.modalHeaderSearch = document.createElement('div');
+        this.modalHeaderSearch.classList.add('modal-header__search');
+        this.searchInput = document.createElement('input');
+        this.searchInput.type = 'text';
+        this.searchInput.classList.add('searchInput');
 
         this.modalBody = document.createElement('div');
 
@@ -40,7 +48,7 @@ class ExtendedSelect {
         this.modalFooter.classList.add('modal-footer');
 
         this.closeBtn = document.createElement('span');
-        this.closeBtn.innerHTML = '&times;';
+        this.closeBtn.innerHTML = '🡠 Реализуемые товары';
         this.closeBtn.classList.add('close');
 
         this.clearBtn = document.createElement('button');
@@ -71,7 +79,10 @@ class ExtendedSelect {
         this.modalContent.appendChild(this.modalHeader);
         this.modalContent.appendChild(this.modalBody);
         this.modalContent.appendChild(this.modalFooter);
-        this.modalHeader.appendChild(this.closeBtn);
+        this.modalHeader.appendChild(this.modalHeaderTitle);
+        this.modalHeader.appendChild(this.modalHeaderSearch);
+        this.modalHeaderTitle.appendChild(this.closeBtn);
+        this.modalHeaderSearch.appendChild(this.searchInput);
         this.modalBody.appendChild(this.modalItemsListContent);
         this.modalFooter.appendChild(this.acceptBtn);
         this.modalFooter.appendChild(this.clearBtn);
@@ -91,17 +102,16 @@ class ExtendedSelect {
         });
         this.clearBtn.addEventListener('click', () => {
             this.toDiselectedAll(this.select);
-
-            while (this.modalItemsListContent.firstChild) {
-                this.modalItemsListContent.removeChild(
-                    this.modalItemsListContent.lastChild
-                );
-            }
-
-            this.modalItemsList(this.select);
+            this.clearItemList();
+            this.modalItemsList(this.select, this.searchInput.value);
         });
 
-        this.modalItemsList(this.select);
+        this.searchInput.addEventListener('input', (e) => {
+            this.clearItemList();
+            this.modalItemsList(this.select, e.target.value.toUpperCase());
+        });
+
+        this.modalItemsList(this.select, '');
     }
 
     watch() {
@@ -132,8 +142,10 @@ class ExtendedSelect {
         )})`;
     }
 
-    modalItemsList(select) {
-        for (let key of select) {
+    modalItemsList(select, filter) {
+        for (let key of Array.from(select).filter((item) =>
+            item.label.toUpperCase().includes(filter.trim())
+        )) {
             const item = document.createElement('div');
 
             item.classList.add('modal-list__item');
@@ -157,6 +169,14 @@ class ExtendedSelect {
                     ? this.toSelected(e.target.id, item)
                     : this.toDiselected(e.target.id, item);
             });
+        }
+    }
+
+    clearItemList() {
+        while (this.modalItemsListContent.firstChild) {
+            this.modalItemsListContent.removeChild(
+                this.modalItemsListContent.lastChild
+            );
         }
     }
 
