@@ -163,6 +163,9 @@ class ExtendedSelect {
             const itemLabel = document.createElement('p');
             itemLabel.innerHTML = key.label;
             itemLabel.classList.add('modal-list__item-text');
+            key.dataset.level
+                ? (itemLabel.style.paddingLeft = `${key.dataset.level * 20}px`)
+                : null;
 
             item.append(checkBox, itemLabel);
             this.modalItemsListContent.appendChild(item);
@@ -216,5 +219,12 @@ class ExtendedSelect {
     }
 }
 
+class TreeSelect extends ExtendedSelect {
+    constructor(element, labelText) {
+        super(element, labelText);
+    }
+}
+
 const aaa = new ExtendedSelect('region', 'Реализуемые товары');
 const bbb = new ExtendedSelect('items', 'Реализуемые позиции');
+const eee = new TreeSelect('tnved', 'Hello');
