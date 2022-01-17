@@ -171,9 +171,27 @@ class ExtendedSelect {
             this.modalItemsListContent.appendChild(item);
 
             checkBox.addEventListener('change', (e) => {
-                e.target.checked
-                    ? this.toSelected(e.target.id, item)
-                    : this.toDiselected(e.target.id, item);
+                if (e.target.id == 0) {
+                    if (e.target.checked) {
+                        this.toSelectedAll(this.select);
+                        this.clearItemList();
+                        this.modalItemsList(
+                            this.select,
+                            this.searchInput.value
+                        );
+                    } else {
+                        this.toDiselectedAll(this.select);
+                        this.clearItemList();
+                        this.modalItemsList(
+                            this.select,
+                            this.searchInput.value
+                        );
+                    }
+                } else {
+                    e.target.checked
+                        ? this.toSelected(e.target.id, item)
+                        : this.toDiselected(e.target.id, item);
+                }
             });
         }
     }
@@ -198,15 +216,21 @@ class ExtendedSelect {
         return this.select.children[value].setAttribute('selected', true);
     }
 
-    toDiselectedAll(select) {
+    toSelectedAll(select) {
         for (let key of select) {
-            this.select.children[key.value].removeAttribute('selected');
+            this.select.children[key.value].setAttribute('selected', true);
         }
     }
 
     toDiselected(value, parent) {
         parent.classList.remove('selected');
         return this.select.children[value].removeAttribute('selected');
+    }
+
+    toDiselectedAll(select) {
+        for (let key of select) {
+            this.select.children[key.value].removeAttribute('selected');
+        }
     }
 
     selectedValue(select) {
@@ -222,6 +246,91 @@ class ExtendedSelect {
 class TreeSelect extends ExtendedSelect {
     constructor(element, labelText) {
         super(element, labelText);
+    }
+
+    modalItemsList(select, filter) {
+        for (let key of Array.from(select).filter((item) =>
+            item.label.toUpperCase().includes(filter.trim())
+        )) {
+            const item = document.createElement('div');
+
+            item.classList.add('modal-list__item');
+
+            const checkBox = document.createElement('input');
+            checkBox.type = 'checkbox';
+            checkBox.id = key.value;
+            checkBox.setAttribute('data-level', key.dataset.level);
+            checkBox.classList.add('modal-list__item-checkbox');
+
+            this.isSelected(key.value, checkBox, item);
+            const itemLabel = document.createElement('p');
+            itemLabel.innerHTML = key.label;
+
+            itemLabel.classList.add('modal-list__item-text');
+            key.dataset.level
+                ? (itemLabel.style.paddingLeft = `${key.dataset.level * 20}px`)
+                : null;
+
+            item.append(checkBox, itemLabel);
+            item.setAttribute('data-level', key.dataset.level);
+
+            this.modalItemsListContent.appendChild(item);
+
+            checkBox.addEventListener('change', (e) => {
+                if (e.target.id == 0) {
+                    if (e.target.checked) {
+                        this.toSelectedAll(this.select);
+                        this.clearItemList();
+                        this.modalItemsList(
+                            this.select,
+                            this.searchInput.value
+                        );
+                    } else {
+                        this.toDiselectedAll(this.select);
+                        this.clearItemList();
+                        this.modalItemsList(
+                            this.select,
+                            this.searchInput.value
+                        );
+                    }
+                } else {
+                    // console.log(item.nextElementSibling);
+                    // if (e.target.checked) {
+                    //     let i = 0;
+                    //     do {
+                    //         this.toSelected(+e.target.id + i);
+                    //         i++;
+                    //     } while (
+                    //         item.dataset.level >
+                    //         item.nextElementSibling.dataset.level
+                    //     );
+                    //     this.clearItemList();
+                    //     this.modalItemsList(
+                    //         this.select,
+                    //         this.searchInput.value
+                    //     );
+                    // }
+                    if (e.target.checked) {
+                        for (let item of Array.from(select)) {
+                            if (e.target.id == item.value) {
+                                console.log(item.value, ' == ', e.target.id);
+                                console.log(item.dataset.level, 'item level');
+                                console.log(
+                                    e.target.dataset.level,
+                                    'target level'
+                                );
+                                this.toSelected(e.target.id, item);
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    toSelected(value, parent) {
+        parent.classList.add('selected');
+        return this.select.children[value].setAttribute('selected', true);
     }
 }
 

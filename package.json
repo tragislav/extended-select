@@ -4,7 +4,8 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "start": "webpack-dev-server --open",
+        "webpack": "webpack -w"
     },
     "repository": {
         "type": "git",
@@ -16,10 +17,6 @@
         "url": "https://github.com/tragislav/extended-select/issues"
     },
     "homepage": "https://github.com/tragislav/extended-select#readme",
-    "scripts": {
-        "start": "webpack-dev-server --open",
-        "webpack": "webpack -w"
-    },
     "devDependencies": {
         "clean-webpack-plugin": "^4.0.0",
         "css-loader": "^6.5.1",
