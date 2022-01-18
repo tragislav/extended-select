@@ -4,8 +4,6 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link href="./css/main.css" rel="stylesheet" />
-        <link href="./css/reset.css" rel="stylesheet" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
@@ -27,14 +25,37 @@
             </select>
 
             <select name="items" multiple class="visually-hidden">
-                <option value="0">Шёлк</option>
+                <option value="0">Все позиции</option>
                 <option value="1">Кожа</option>
                 <option value="2">Шкура</option>
                 <option value="3">Ткань</option>
                 <option value="4">Сукно</option>
             </select>
+
+            <select name="tnved" multiple class="visually-hidden">
+                <option value="0">Все позиции</option>
+                <option value="1" selected>
+                    [A] Элемент с 1 уровнем вложенности
+                </option>
+                <option value="2" data-level="2">
+                    [B] Элемент со 2 уровнем вложенности
+                </option>
+                <option value="3" data-level="3">
+                    [C] Элемент с 3 уровнем вложенности
+                </option>
+                <option value="4" data-level="4">
+                    [D] Элемент с 4 уровнем вложенности
+                </option>
+                <option value="5" data-level="5">
+                    [E] Элемент с 5 уровнем вложенности
+                </option>
+                <option value="6" data-level="6">
+                    [F] Элемент с 6 уровнем вложенности
+                </option>
+                <option value="7">[G] Элемент с 1 уровнем вложенности</option>
+            </select>
         </div>
 
-        <script src="./src/main.js"></script>
+        <script src="./main.js"></script>
     </body>
 </html>

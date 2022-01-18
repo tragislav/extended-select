@@ -74,7 +74,7 @@ html {
 
 .modal-content {
     background-color: #fefefe;
-    margin: 5% auto;
+    margin: 2% auto;
     border: 1px solid #888;
     width: 600px;
 }
@@ -124,7 +124,7 @@ html {
 }
 
 .modal-list {
-    padding: 0 20px;
+    padding: 5px 20px 0 20px;
 }
 
 .modal-list__item {
