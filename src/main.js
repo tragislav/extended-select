@@ -1,8 +1,5 @@
 'use strict';
 
-import '../css/main.css';
-import '../css/reset.css';
-
 const container = document.querySelector('.container');
 
 // Extended Select
