@@ -294,43 +294,39 @@ class TreeSelect extends ExtendedSelect {
                         );
                     }
                 } else {
-                    // console.log(item.nextElementSibling);
-                    // if (e.target.checked) {
-                    //     let i = 0;
-                    //     do {
-                    //         this.toSelected(+e.target.id + i);
-                    //         i++;
-                    //     } while (
-                    //         item.dataset.level >
-                    //         item.nextElementSibling.dataset.level
-                    //     );
-                    //     this.clearItemList();
-                    //     this.modalItemsList(
-                    //         this.select,
-                    //         this.searchInput.value
-                    //     );
-                    // }
-                    if (e.target.checked) {
-                        for (let item of Array.from(select)) {
-                            if (e.target.id == item.value) {
-                                console.log(item.value, ' == ', e.target.id);
-                                console.log(item.dataset.level, 'item level');
-                                console.log(
-                                    e.target.dataset.level,
-                                    'target level'
-                                );
-                                this.toSelected(e.target.id, item);
-                            }
-                        }
-                    }
+                    e.target.checked
+                        ? this.toSelected(e.target.id)
+                        : this.toDiselected(e.target.id);
+                    this.clearItemList();
+                    this.modalItemsList(this.select, this.searchInput.value);
                 }
             });
         }
     }
 
-    toSelected(value, parent) {
-        parent.classList.add('selected');
-        return this.select.children[value].setAttribute('selected', true);
+    toSelected(value) {
+        if (
+            !this.select.children[+value + 1] ||
+            this.select.children[+value].dataset.level >=
+                this.select.children[+value + 1].dataset.level
+        ) {
+            return this.select.children[value].setAttribute('selected', true);
+        }
+
+        this.select.children[value].setAttribute('selected', true);
+        return this.toSelected(+value + 1);
+    }
+
+    toDiselected(value) {
+        if (
+            !this.select.children[+value + 1] ||
+            this.select.children[+value].dataset.level >=
+                this.select.children[+value + 1].dataset.level
+        ) {
+            return this.select.children[value].removeAttribute('selected');
+        }
+        this.select.children[value].removeAttribute('selected');
+        return this.toDiselected(+value + 1);
     }
 }
 
